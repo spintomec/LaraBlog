@@ -25,7 +25,9 @@
             <x-text-input id="title" name="title" value="{{ $post->title }}" />
 
             <x-input-label for="content" value="Contenu du post" />
-            <textarea name="content" id="content" value="{{ $post->content }}"></textarea>
+            <textarea id="content" name="content" value="{{ $post->content }}"></textarea>
+
+            {{-- <textarea id="content" name="content" value="{{ $post->content }}"></textarea> --}}
             
             <x-input-label for="image" value="Image" />
             <x-text-input id="image" type="file" name="image" />

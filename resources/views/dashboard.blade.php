@@ -44,7 +44,14 @@
                                 Voir plus
                             </a>
                             <a href="{{ route('posts.edit', $post) }}" class="bg-yellow-500 px-2 py-3">Editer {{ $post->title }}</a>
-                            <a href="{{ route('posts.show', $post) }}" class="bg-red-500 px-2 py-3 color-withe">Supprimer {{ $post->title }}</a>
+                            <a href="#" class="bg-red-500 px-2 py-3 color-withe" 
+                                onclick="event.preventDefault; document.getElementById('destroy-post-form').submit();">
+                                Supprimer {{ $post->title }}
+                                <form action="{{ route('posts.destroy', $post) }}" method="post" id="destroy-post-form">
+                                    @csrf
+                                    @method('delete')
+                                </form>
+                            </a>
                             <div>
                                 <a href="#" class="flex items-center"><img
                                         src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=731&amp;q=80"

@@ -11,6 +11,7 @@ use Illuminate\View\View;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -74,10 +75,12 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        if (! Gate::allows('update-post', $post)) {
+            abort(403);
+        }
+
         $categories = Category::all();
         return view('post.edit', compact('post', 'categories'));
-
-        // return redirect()->route('dashboard')->with('success', 'Votre post a été modifié avec succès');
 
     }
 
@@ -103,7 +106,7 @@ class PostController extends Controller
          }
          $post->update($arrayUpdate);
 
-        return redirect()->route('dashboard')->with('success', 'Votre post a été modifié avec succès');
+        return redirect()->route('dashboard')->with('success', 'Votre post a été modifié');
     }
 
     /**
@@ -112,8 +115,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        if (! Gate::allows('destroy-post', $post)) {
+            abort(403);
+        }
+        
+        $post->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Votre post a été supprimé');
+
     }
 }
