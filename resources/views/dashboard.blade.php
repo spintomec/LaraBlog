@@ -11,15 +11,7 @@
                 {{ session('success') }}
             @endif
 
-            {{-- <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg"> --}}
-                {{-- @foreach ($posts as $post) --}}
-                {{-- <div class="flex items-center">
-                    {{ $post->title }}
-                    <a href="{{ route('posts.edit', $post) }}" class="bg-yellow-500 px-2 py-3">Editer {{ $post->title }}</a>
-                    <a href="{{ route('posts.show', $post) }}" class="bg-red-500 px-2 py-3 color-withe">Supprimer {{ $post->title }}</a>
-                </div> --}}
-                @foreach ($posts as $post)
-                        
+            @foreach ($posts as $post)
                 <div class="mt-6">
                     <div class="max-w-4xl px-10 py-6 mx-auto bg-white rounded-lg shadow-md">
                         <div class="flex items-center justify-between">
@@ -62,8 +54,7 @@
                         </div>
                     </div>
                 </div>
-                    
-                @endforeach
+            @endforeach
             </div>
         </div>
     </div>

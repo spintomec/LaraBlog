@@ -2,7 +2,7 @@
 
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-center font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Créer un post') }}
         </h2>
     </x-slot>
@@ -14,31 +14,53 @@
             <span class="block text-red-500">{{ $error }}</span>
         @endforeach
         </div>
-        
 
-        <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data" class ="mt-10">
-            
+    </div>
+
+    <div class="flex items-center justify-center">
+        <div class="mx-auto w-full max-w-[550px]">
+            <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data" class ="mt-10">
+
             @csrf
-        
-            <x-input-label for="title" value="Titre" />
-            <x-text-input id="title" name="title" />
 
-            <x-input-label for="content" value="Contenu du post" />
-            <textarea name="content" id="content" ></textarea>
-            
+            <div class="mb-3">
+            <!-- Titre -->
+            <x-input-label for="title" value="Titre du post" 
+                for="name"
+                class="mb-3 block text-base font-medium text-[#07074D]"
+                />
+            <x-text-input id="title" name="title" aria-placeholder="Titre"
+                placeholder="Titre du post"
+                class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+
+            </div>
+            <div class="mb-3">
+            <x-input-label for="content" value="Contenu du post" class="mb-3 block text-base font-medium text-[#07074D]"/>
+            <textarea
+                rows="4"
+                name="content"
+                id="content"
+                placeholder="Contenu du post"
+                class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            ></textarea>
+            </div>
+
+            {{-- @include('partials.upload') --}}
             <x-input-label for="image" value="Image" />
             <x-text-input id="image" type="file" name="image" />
-
-            <x-input-label for="category" value="Catégorie" />
-            <select name="category" id="category">
+           
+            <x-input-label for="category" value="Catégorie" class="mt-3 block text-base font-medium text-[#07074D]"/>
+            <select name="category" id="category" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium outline-none focus:border-[#6A64F1] focus:shadow-md">
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}"> {{ $category->name }}</option>
+                    <option class="bg-white" value="{{ $category->id }}"> {{ $category->name }}</option>
                 @endforeach
             </select>
 
-            <x-button style="display: block !important" class="mt-5">Créer mon post</x-button>
-
+            <button class="mt-5 hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
+                Submit
+            </button>
         </form>
-
+        </div>
     </div>
 </x-app-layout>

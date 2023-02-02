@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Post;
+use App\Models\User;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -23,7 +25,19 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('category', 'user')->latest()->get();
-        return view('post.index', compact('posts'));
+
+
+        // $authorsClassement = DB::table('user')->count()->groupBy('user')->find(5);
+        // $authorsClassement = 
+        // DB::table('users')
+        // ->selectRaw('count(posts.id) as postCounter')
+        // ->join('posts', 'users.id', '=', 'posts.user_id')
+        // ->groupBy('users.id')
+        // ->orderBy('count(postCounter) DESC')
+        // ->limit(5);
+
+        dd($authorsClassement);
+        return view('post.index', compact('posts') );
     }
 
     /**
