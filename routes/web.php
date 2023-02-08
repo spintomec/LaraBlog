@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('posts', PostController::class)
     ->except('index');
+    Route::post('/like-post/{id}',[PostController::class,'likePost'])->name('like.post');
+    Route::post('/unlike-post/{id}',[PostController::class,'unlikePost'])->name('unlike.post');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

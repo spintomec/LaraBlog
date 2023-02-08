@@ -27,17 +27,31 @@ class PostController extends Controller
         $posts = Post::with('category', 'user')->latest()->get();
 
 
-        // $authorsClassement = DB::table('user')->count()->groupBy('user')->find(5);
-        // $authorsClassement = 
-        // DB::table('users')
-        // ->selectRaw('count(posts.id) as postCounter')
-        // ->join('posts', 'users.id', '=', 'posts.user_id')
-        // ->groupBy('users.id')
-        // ->orderBy('count(postCounter) DESC')
-        // ->limit(5);
+        $authorsClassement = DB::table('posts')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->selectRaw('users.name as user_name, count(posts.id) as post_count')
+            ->groupBy('users.name')
+            ->orderByDesc('post_count')
+            ->take(5)
+            ->get();
 
-        dd($authorsClassement);
-        return view('post.index', compact('posts') );
+        $mostPopularCategories = DB::table('posts')
+            ->join('categories', 'posts.category_id', '=', 'categories.id')
+            ->selectRaw('categories.name as category_name, count(posts.id) as post_count')
+            ->groupBy('categories.name')
+            ->orderByDesc('post_count')
+            ->take(5)
+            ->get();
+
+        $lastPost = DB::table('posts')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->join('categories', 'posts.category_id', '=', 'categories.id')
+            ->select('posts.*', 'users.name as user_name', 'categories.name as category_name')
+            ->orderByDesc('posts.created_at')
+            ->first();
+        
+
+        return view('post.index', compact('posts', 'authorsClassement', 'mostPopularCategories', 'lastPost') );
     }
 
     /**
@@ -96,6 +110,22 @@ class PostController extends Controller
         $categories = Category::all();
         return view('post.edit', compact('post', 'categories'));
 
+    }
+
+    public function likePost($id)
+    {
+        $post = Post::find($id);
+        $post->like();
+        $post->save();
+        return redirect()->route('posts.index')->with('message','Post Like successfully!');
+    }
+
+    public function unlikePost($id)
+    {
+        $post = Post::find($id);
+        $post->unlike();
+        $post->save();
+        return redirect()->route('posts.index')->with('message','Post Like undo successfully!');
     }
 
     /**
